@@ -11,3 +11,60 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.custom-range{
+  width: 30% !important
+}
+.can{
+  height: 500px;
+  
+  
+}
+.file{
+  cursor: pointer;
+ 
+}
+.r{
+  padding: 2px 9px;
+  border-radius: 3px;
+  font-family: 'Roboto', sans-serif;
+  
+  font-size: 1.1em;
+  background-color: red;
+
+}
+.g{
+  padding: 2px 9px;
+  border-radius: 3px;
+  font-family: 'Roboto', sans-serif;
+  
+  font-size: 1.1em;
+  background-color: green;
+
+}
+.b{
+  padding: 2px 9px;
+  border-radius: 3px;
+  font-family: 'Roboto', sans-serif;
+  
+  font-size: 1.1em;
+  background-color: blue;
+
+}
+.one{
+  text-align: center;
+}
+.custom-range{
+  position: relative;
+  top: 5px;
+}
+.two{
+  text-align: center;
+  margin-top: 5px;
+}
+.three{
+  margin-top: 10px;
+  text-align: center;
+}
+.textp{
+  color: white;
+}
