@@ -5,6 +5,7 @@ class mms extends Component{
     constructor(){
         super()
         this.state={
+            colors: {},
             image: null,
             sizeimg: null,
             label: false,
@@ -16,16 +17,8 @@ class mms extends Component{
             newsave:"",
             canvassize: "",
             button: false,
+            reload: true,
         }
-    }
-
-    componentDidUpdate(){
-        //this.RGBtoHex();
-        //this.size2();
-        
-    }
-    componentDidMount(){
-        
     }
    
     upload=(event)=>{
@@ -45,17 +38,16 @@ class mms extends Component{
        
     }
 
-    RGB=()=>{
-        var red=document.getElementById("Red").value;
-        var blue=document.getElementById("blue").value;
-        var green=document.getElementById("green").value;
-        var array={red,green,blue};
-        return array;
+    RGB=(e)=>{
+        const {value, id} = e.target;
+        var colors = this.state.colors;
+        colors[id] = value;
+        this.setState({colors: colors});
     }
     
     RGBtoHex=()=>{
-        const {red,green,blue}=this.RGB();
-        console.log(red);
+        const {red,green,blue} = this.state.colors;
+        // console.log(red);
         let red1=parseInt(red);
         let green1=parseInt(green);
         let blue1=parseInt(blue);
@@ -70,9 +62,8 @@ class mms extends Component{
         three = "0" + three;
 
         let four="#".concat(one,two,three);
-        console.log(one, two, three)
         this.setState({Color: four});
-        return four;
+        // return four;
     }
 
     Color=()=>{
@@ -82,7 +73,7 @@ class mms extends Component{
         var putimagetemp= canvastemp.getContext("2d");
         let img=new Image();
         img.src=this.state.image;
-        let hex=this.RGBtoHex();
+        let hex=this.state.Color;
         this.setState({label: true});
         img.onload=()=>{
                 canvas.width=canvastemp.width=img.width;
@@ -143,16 +134,6 @@ class mms extends Component{
         console.log(calculate);
     }
     size2=(event)=>{
-        
-        //console.log(this.state.save2)
-        // if(this.state.save === event){
-        //     let test=event.toDataURL("img/png");
-        //     console.log(test.length);
-        //     console.log("test");
-        // }
-        //let that=this;
-        
-        //var create = document.createElement("img");
         setTimeout(()=>{
             let save= this.state.newsave;
         console.log(save);
@@ -168,59 +149,14 @@ class mms extends Component{
         this.setState({canvassize: calculate});
 
         },100);
-        // let save= this.state.newsave;
-        // console.log(save);
-        // this.setState({jog: true});
-        // let data = save.toDataURL("image/jpeg",0.8);
-        // // let Window = window.open('about:blank', 'image from canvas');
-        // // Window.document.write("<img src='"+data+"' alt='from canvas'/>");
-        // console.log(data.length);
-        // let size = (data.length/1000)/1024;
-        // console.log(size);
-        // let calculate=parseFloat(size).toFixed(3);
-        // console.log(calculate);
-        // this.setState({canvassize: calculate});
 
-        //document.write('<img src="' + data + '" />');
-
-        
-
-        // let test = save.toBlob(function(blob){
-        //     let anchor = document.createElement('a');
-        //     const url = URL.createObjectURL(blob);
-        //     console.log(url,anchor);
-        //     anchor.href = url
-        //     anchor.download = 'canvas.jpeg'
-        //     document.body.appendChild(anchor)
-        //     alert(blob.type);
-        // },'jpeg',0.1)
-        
-        
-        
-
-    //    var image = new Image();
-    //    image.onload=()=>
-    //    {
-    //     var img=this.state.save;
-        
-    //     console.log(img);
-    //     console.log("loading")
-    //    }
-            
-        
-        // window.onload=this.Color=()=>{
-        //     var img=this.state.save;
-        //     let test=img.toDataURL("img/png");
-        //     console.log(test);
-        //     console.log("inner")
-        // };
         console.log("loadingouter")
         
     }
 
     newColor=()=>{
         
-        const {red,green,blue}=this.RGB();
+        const {red,green,blue}=this.state.colors;
         var canvas=document.getElementById("canvas");
         var putimage= canvas.getContext("2d");
         var canvastemp=document.getElementById("canvas1");
@@ -233,7 +169,9 @@ class mms extends Component{
                 canvas.width=img.width;
                 canvas.height=img.height;
                 putimage.drawImage(img,0,0);
-                let image=putimage.getImageData(0,0,canvas.width,canvas.height);
+        }
+        //let R,G,B;
+        let image=putimage.getImageData(0,0,canvas.width,canvas.height);
         let imgData=image;
         console.log(imgData.data);
         
@@ -252,15 +190,11 @@ class mms extends Component{
                 }
         console.log((imgData.data.length * 3)/4);
         
-
         canvastemp.width=img.width;
         canvastemp.height=img.height;
         putimagetemp.putImageData(imgData, 0, 0);
         
         this.setState({newsave: canvastemp});
-        }
-        //let R,G,B;
-        
         // let test = canvastemp.toDataURL("img/jpeg",0.5);
         // let base=test.substr(22);
         // let decode = atob(base);
@@ -268,15 +202,18 @@ class mms extends Component{
         // let calculate=parseFloat(size).toFixed(3);
         // console.log(calculate);
         this.size2();
-        
-
+        if(this.state.reload)
+        {
+            this.newColor();
+            this.setState({reload: false})
+        }
     }
     render(){
         return(
             <div>
                 <Container fluid style={{backgroundColor:this.state.Color}} className="one">
                     <h3 className="textp">MMS Project!</h3>
-                <label className="r">R</label><input  id="Red" type="range" min="0"  step="0.1"  max="1" onChange={this.RGB} className="custom-range"></input>
+                <label className="r">R</label><input  id="red" type="range" min="0"  step="0.1"  max="1" onChange={this.RGB} className="custom-range"></input>
                 <br></br>
                 <label className="g">G</label><input  id="green" type="range" min="0" step="0.1" max="1" onChange={this.RGB} className="custom-range"></input>
                 <br></br>
@@ -285,9 +222,7 @@ class mms extends Component{
 
                 <Container className="two">
                     <label className="btn btn-lg btn-success file">Upload!<input id="file" type="file" style={{display: "none"}} onChange={this.upload}></input></label>
-                    {/* <label className="btn btn-lg btn-success file" >Upload the image <input type="file" style={{display: "none"}}></input></label> */}
-                  
-                    
+                    {/* <label className="btn btn-lg btn-success file" >Upload the image <input type="file" style={{display: "none"}}></input></label> */}                                     
                 </Container>
                 
                 <Container className="three">
@@ -295,13 +230,13 @@ class mms extends Component{
                     {/* { this.state.jog===true ? <h5>FileSize = {this.state.size2}Mb</h5>: null} */}
                     <div style={{display: "flex"}}>
                     <div> 
-                    { this.state.button===true ? <h3>Original</h3>: null}
+                    { this.state.button === true ? <h3>Original</h3>: null}
                     <img className="can"  src={this.state.image} alt=""></img>
-                    { this.state.button===true ? <h5>FileSize = {this.state.sizeimg}Mb</h5>: null}
+                    { this.state.button === true ? <h5>FileSize = {this.state.sizeimg}Mb</h5>: null}
                     </div>
                     <div>
-                    { this.state.label===true ? <h3>Grayscale</h3>: null}
-                    <canvas style={{display: "none"}} id="canvas" className="can" onClick={()=>{this.newColor()}}></canvas>
+                    { this.state.label === true ? <h3>Grayscale</h3>: null}
+                    <canvas style={{display: "none"}} id="canvas" className="can" onClick={this.newColor}></canvas>
                     <canvas  id="canvas1" className="can"></canvas>
                     { this.state.jog===true ? <h5 >FileSize = {this.state.canvassize}Mb</h5>: null}
                     {/* { this.state.label===true ? <h5>FileSize = {this.state.sizeimg}Mb</h5>: null} */}
