@@ -29,7 +29,8 @@ class mms extends Component{
     }
    
     upload=(event)=>{
-        this.setState({button: true})
+        this.setState({button: true, newsave: null})
+        
         if (event.target.files && event.target.files[0]) {
             var size=event.target.files[0].size;
             var cal=size/1000;
@@ -157,7 +158,7 @@ class mms extends Component{
             let save= this.state.newsave;
         console.log(save);
         this.setState({jog: true});
-        let data = save.toDataURL("image/jpeg",0.8);
+        let data = save.toDataURL("image/jpeg",0.7);
         // let Window = window.open('about:blank', 'image from canvas');
         // Window.document.write("<img src='"+data+"' alt='from canvas'/>");
         console.log(data.length);
@@ -276,11 +277,11 @@ class mms extends Component{
             <div>
                 <Container fluid style={{backgroundColor:this.state.Color}} className="one">
                     <h3 className="textp">MMS Project!</h3>
-                <label className="r">R</label><input  id="Red" type="range" min="0"  step="0.1"  max="1" onChange={this.RGB} className="custom-range"></input>
+                <label className="r">R</label><input  id="Red" type="range" min="0"  step="0.1"  max="1" onChange={this.newColor} className="custom-range"></input>
                 <br></br>
-                <label className="g">G</label><input  id="green" type="range" min="0" step="0.1" max="1" onChange={this.RGB} className="custom-range"></input>
+                <label className="g">G</label><input  id="green" type="range" min="0" step="0.1" max="1" onChange={this.newColor} className="custom-range"></input>
                 <br></br>
-                <label className="b">B</label><input  id="blue" type="range" min="0"  step="0.1" max="1" onChange={this.RGB} className="custom-range"></input>
+                <label className="b">B</label><input  id="blue" type="range" min="0"  step="0.1" max="1" onChange={this.newColor} className="custom-range"></input>
                 </Container>
 
                 <Container className="two">
