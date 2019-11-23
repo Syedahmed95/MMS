@@ -1,5 +1,7 @@
 import React from "react";
-import {Container, Button} from "react-bootstrap"
+import {Container} from "react-bootstrap";
+import ReactCompareImage from 'react-compare-image';
+import Intro from './body';
 
 class mms extends React.Component{
     constructor(){
@@ -15,6 +17,7 @@ class mms extends React.Component{
             button: false,
             R:0.3, G:0.5, B:0.1,
             slider: false,
+            image2: null,
 
         }
     }
@@ -31,6 +34,9 @@ class mms extends React.Component{
             } , ()=>{
                 console.log(this.state.image)
             });
+            setTimeout(()=>{
+                this.newColor()
+            },100)
           }
        
     }
@@ -99,8 +105,11 @@ class mms extends React.Component{
         canvastemp.width=img.width;
         canvastemp.height=img.height;
         putimagetemp.putImageData(imgData, 0, 0);
+
+        let image3 = canvastemp.toDataURL();
         
-        this.setState({newsave: canvastemp});
+        
+        this.setState({newsave: canvastemp, image2:image3});
 
         }
      
@@ -126,7 +135,29 @@ class mms extends React.Component{
     render(){
         return(
             <div>
-                <Container fluid style={{backgroundColor:this.state.Color}} className="one">
+               
+                <nav className="navbar navbar-dark bg-dark">
+                {/* Navbar brand */}
+                <div style={{margin: 'auto'}}>
+                <a className="navbar-brand" href="#">MMS Project</a>
+               
+                {/* Collapse button */}
+                <button className="navbar-toggler toggler-example" type="button" data-toggle="collapse" data-target="#navbarSupportedContent1" aria-controls="navbarSupportedContent1" aria-expanded="false" aria-label="Toggle navigation"><span className="dark-blue-text"><i className="fas fa-bars fa-1x" /></span></button>
+                {/* Collapsible content */}
+                
+                </div>
+                <div className="collapse navbar-collapse" style={{textAlign: 'center'}} id="navbarSupportedContent1">
+                <label className="r">R</label><input name="R" value={this.state.R} id="Red" type="range" min="0"  step="0.1"  max="1" onChange={this.change} className="custom-range"></input>
+                <br></br>
+                <label className="g">G</label><input name="G" value={this.state.G} id="green" type="range" min="0"  step="0.1"  max="1" onChange={this.change} className="custom-range"></input>
+                <br></br>
+                <label className="b">B</label><input name="B" value={this.state.B} id="blue" type="range" min="0"  step="0.1" max="1" onChange={this.change} className="custom-range"></input>
+                </div>
+                {/* Collapsible content */}
+
+                </nav>
+
+                {/* <Container fluid style={{backgroundColor:this.state.Color}} className="one">
                     <h3 className="textp">MMS Project!</h3>
                 <label className="r">R</label><input name="R" value={this.state.R} id="Red" type="range" min="0"  step="0.1"  max="1" onChange={this.change} className="custom-range"></input>
                 <br></br>
@@ -134,15 +165,15 @@ class mms extends React.Component{
                 <br></br>
                 <label className="b">B</label><input name="B" value={this.state.B} id="blue" type="range" min="0"  step="0.1" max="1" onChange={this.change} className="custom-range"></input>
 
-                </Container>
+                </Container> */}
 
                 <Container className="two">
-                    <label className="btn btn-lg btn-success file">Upload!<input id="file" type="file" style={{display: "none"}} onChange={this.upload}></input></label>
-                    
+                    <label className="btn btn-lg btn-danger file">Upload<input id="file" type="file" style={{display: "none"}} onChange={this.upload}></input></label>
+                    {/* { this.state.button===true ? <Button className="btn btn-lg btn-success" style={{marginLeft: '5px', marginBottom: '8px'}} onClick={this.newColor}>Grayscale</Button>: null} */}
                 </Container>
                 
-                <Container className="three">
-                    <div style={{display: "flex"}}>
+                <Container  className="three">
+                    {/* <div style={{display: "flex"}}>
                     <div> 
                     { this.state.button===true ? <h3>Original</h3>: null}
                     <img className="can"  src={this.state.image} alt=""></img>
@@ -150,18 +181,29 @@ class mms extends React.Component{
                     </div>
                     <div>
                     { this.state.label===true ? <h3>Grayscale</h3>: null}
-                    <canvas style={{display: "none"}} id="canvas" className="can" onClick={()=>{this.newColor()}}></canvas>
-                    <canvas  id="canvas1" className="can"></canvas>
                     { this.state.jog===true ? <h5 >FileSize = {this.state.canvassize}Mb</h5>: null}
                     </div>
                     
-                    </div>
+                    </div> */}
+                    <canvas style={{display: "none"}} id="canvas" className="can" onClick={()=>{this.newColor()}}></canvas>
+                    <canvas style={{display: "none"}} id="canvas1" className="can"></canvas>
+
 
                     <div style={{textAlign: "center"}}> 
-                    { this.state.button===true ? <Button  onClick={this.newColor}>Convert to Grayscale!</Button>: null}
+                    {/* { this.state.button===true ? <Button  onClick={this.newColor}>Convert to Grayscale!</Button>: null} */}
+                    </div>
+                    <Container className='wow zoomIn' data-wow-duration="4s" data-wow-delay="1.5s" style={{width: '800px', paddingTop: '4px'}}>
+                    { this.state.label===true ? <ReactCompareImage leftImageLabel="Original" leftImage={this.state.image} rightImage={this.state.image2} rightImageLabel="GrayScale" />: null}
+                    <div style={{display: "flex", justifyContent: 'space-between'}}>
+                    { this.state.jog===true ? <h5>FileSize = {this.state.sizeimg}mb</h5>: null}
+                    { this.state.jog===true ? <h5>FileSize = {this.state.canvassize}mb</h5>: null}
                     </div>
                     
                 </Container>
+
+                </Container>
+                
+                <Intro />
                 
                 </div>
             
